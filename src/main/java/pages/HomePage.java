@@ -14,8 +14,8 @@ public class HomePage extends BasePage {
     private By speakersCategory = By.id("speakersTxt");
     private By cartIcon = By.id("menuCart");
     private By loginButton = By.id("sign_in_btn");
-    private By myAccountLabel = By.xpath("//label[contains(text(),'My account')]");
-    private By deleteAccountButton = By.xpath("//button[contains(text(),'Delete Account') or contains(@translate,'DELETE_ACCOUNT')]");
+    private By myAccountLabel = By.xpath("(//label[contains(text(),'My account')])[2]");
+    private By deleteAccountButton = By.xpath("//div[contains(text(),'Delete Account')]");
 
     public HomePage(WebDriver driver) {
         super(driver);
