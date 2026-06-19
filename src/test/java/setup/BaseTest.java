@@ -1,3 +1,4 @@
+package setup;
 
 import pages.HomePage;
 import org.openqa.selenium.PageLoadStrategy;
