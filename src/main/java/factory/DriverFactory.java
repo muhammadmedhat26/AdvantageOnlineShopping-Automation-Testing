@@ -1,38 +1,46 @@
 package factory;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.time.Duration;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class DriverFactory {
 
-    public static WebDriver initializeDriver(){
-        WebDriver driver ;
-        String browser = System.getProperty("browser","CHROME");
+    public static WebDriver initializeDriver() {
+        WebDriver driver;
+        String browser = System.getProperty("browser", "CHROME");
+
         switch (browser.toUpperCase()) {
             case "CHROME":
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--start-maximized");
+                chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                driver = new ChromeDriver(chromeOptions);
                 break;
+
             case "FIREFOX":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.addArguments("--width=1920", "--height=1080");
+                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                driver = new FirefoxDriver(firefoxOptions);
                 break;
+
             case "EDGE":
-                WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
+                EdgeOptions edgeOptions = new EdgeOptions();
+                edgeOptions.addArguments("--start-maximized");
+                edgeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                driver = new EdgeDriver(edgeOptions);
                 break;
+
             default:
-                throw new RuntimeException("Browser not supported");
+                throw new RuntimeException("Browser not supported: " + browser);
         }
 
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-        driver.manage().window().maximize();
         return driver;
     }
 }

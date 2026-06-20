@@ -2,52 +2,39 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends BasePage {
 
-    @FindBy(css = "[id='menuUser']")
-    private WebElement userIcon;
-
-    @FindBy(css = "[name='username']")
-    private WebElement usernameInput;
-
-    @FindBy(css = "[name='password']")
-    private WebElement passwordInput;
-
-    @FindBy(css ="[id='sign_in_btn']")
-    private WebElement signInButton;
+    private By usernameInput = By.cssSelector("[name='username']");
+    private By passwordInput = By.cssSelector("[name='password']");
+    private By signInButton = By.cssSelector("[id='sign_in_btn']");
 
 
     public LoginPage(WebDriver driver) {
         super(driver);
-    }
 
-    public LoginPage openLoginPopup() {
-        userIcon.click();
-        return this;
     }
 
     public LoginPage enterUsername(String username) {
-        usernameInput.sendKeys(username);
+        System.out.println("Entering username: " + username);
+        driver.findElement(usernameInput).sendKeys(username);
         return this;
     }
 
     public LoginPage enterPassword(String password) {
-        passwordInput.sendKeys(password);
+        System.out.println("Entering password: " + password);
+        driver.findElement(passwordInput).sendKeys(password);
         return this;
     }
 
-    public HomePage clickSignIn() {
-        signInButton.click();
-        return new HomePage(driver);
+    public void clickSignIn() {
+        System.out.println("Clicking sign in button");
+        driver.findElement(signInButton).click();
     }
 
-    public HomePage login(String username, String password) {
-        openLoginPopup();
+    public void login(String username, String password) {
         enterUsername(username);
         enterPassword(password);
-        return clickSignIn();
+        clickSignIn();
     }
 }
