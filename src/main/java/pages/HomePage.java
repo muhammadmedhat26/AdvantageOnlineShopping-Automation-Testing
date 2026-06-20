@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 
 public class HomePage extends BasePage {
@@ -23,15 +24,15 @@ public class HomePage extends BasePage {
 
     public void clickUserIcon() {
         System.out.println("Clicking user icon");
-        waitForLoaderToDisappear();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(userIcon));
         driver.findElement(userIcon).click();
     }
 
     public void waitForLoginPopup() {
         System.out.println("Waiting for login popup to appear");
-        waitForLoaderToDisappear();
         new WebDriverWait(driver, Duration.ofSeconds(20))
                 .until(d -> driver.findElement(loginButton).isDisplayed() && driver.findElement(createAccountLink).isDisplayed());
+        waitForPopupsToDisappear();
     }
 
     public void clickCreateAccount() {

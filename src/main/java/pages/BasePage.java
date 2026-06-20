@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class BasePage {
+
     protected WebDriver driver;
     protected WebDriverWait wait;
 
@@ -18,17 +19,13 @@ public class BasePage {
 
     protected void waitForLoaderToDisappear() {
         try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(
-                    By.cssSelector("div.loader")
-            ));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.loader")));
         } catch (Exception e) {}
     }
 
     protected void waitForPopupsToDisappear() {
         try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(
-                    By.cssSelector("div.PopUp")
-            ));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.PopUp")));
         } catch (Exception e) {}
     }
 }
