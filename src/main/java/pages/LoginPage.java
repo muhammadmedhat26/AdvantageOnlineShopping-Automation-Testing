@@ -37,9 +37,7 @@ public class LoginPage extends BasePage {
 
     public HomePage clickSignIn() {
         wait.until(ExpectedConditions.elementToBeClickable(signInButton)).click();
-
         wait.until(ExpectedConditions.visibilityOfElementLocated(loggedInUserLink));
-
         return new HomePage(driver);
     }
 
@@ -52,12 +50,10 @@ public class LoginPage extends BasePage {
 
     public LoginPage clickSignInExpectingFailure() {
         wait.until(ExpectedConditions.elementToBeClickable(signInButton)).click();
-
         wait.until(ExpectedConditions.textToBePresentInElementLocated(
                 signInErrorMessage,
                 "Incorrect"
         ));
-
         return this;
     }
 

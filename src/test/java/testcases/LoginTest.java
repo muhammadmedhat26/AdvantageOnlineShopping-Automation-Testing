@@ -19,7 +19,10 @@ public class LoginTest extends BaseTest {
 
         HomePage homePage = loginPage.login(USERNAME, PASSWORD);
 
-        Assert.assertTrue(homePage.isUserLoggedIn(USERNAME));
+        Assert.assertTrue(
+                homePage.isUserLoggedIn(USERNAME),
+                "User should be logged in successfully"
+        );
     }
 
     @Test(dataProvider = "invalidLoginData")
@@ -33,8 +36,10 @@ public class LoginTest extends BaseTest {
 
         Assert.assertEquals(
                 loginPage.getErrorMessage(),
-                "Incorrect user name or password."
+                "Incorrect user name or password.",
+                "Error message is incorrect"
         );
+
     }
 
     @DataProvider

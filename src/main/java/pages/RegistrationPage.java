@@ -3,6 +3,7 @@ package pages;
 import TestData.TestData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class RegistrationPage extends BasePage {
 
@@ -19,9 +20,7 @@ public class RegistrationPage extends BasePage {
 
     public void registerNewUser() {
         System.out.println("Registering new user");
-
-        waitForLoaderToDisappear();
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameField));
         driver.findElement(usernameField).sendKeys(TestData.USERNAME);
         System.out.println("Entered username: " + TestData.USERNAME);
 
