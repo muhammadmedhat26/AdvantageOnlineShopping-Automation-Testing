@@ -1,27 +1,48 @@
 package testcases;
 
+import TestData.TestData;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
 import setup.BaseTest;
 
+import static TestData.TestData.PASSWORD;
+import static TestData.TestData.USERNAME;
+
 public class LoginTest extends BaseTest {
 
     @Test
-    public void userCanLoginSuccessfully() throws InterruptedException {
-
+    public void userCanLoginSuccessfully() {
         LoginPage loginPage = new LoginPage(driver);
 
-        HomePage homePage =
-                loginPage.login(
-                        "SalmaMizar",
-                        "123456Ss"
-                );
-        Thread.sleep(5000);
+        HomePage homePage = loginPage.login(USERNAME, PASSWORD);
 
-        Assert.assertTrue(
-                homePage.isUserLoggedIn("SalmaMizar")
+        Assert.assertTrue(homePage.isUserLoggedIn(USERNAME));
+    }
+
+    @Test(dataProvider = "invalidLoginData")
+    public void userCannotLoginWithInvalidCredentials(String username, String password) {
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.openLoginPopup()
+                .enterUsername(username)
+                .enterPassword(password)
+                .clickSignInExpectingFailure();
+
+        Assert.assertEquals(
+                loginPage.getErrorMessage(),
+                "Incorrect user name or password."
         );
+    }
+
+    @DataProvider
+    public Object[][] invalidLoginData() {
+        return new Object[][]{
+                {USERNAME, TestData.INVALID_PASSWORD},
+                {TestData.INVALID_USERNAME, PASSWORD},
+                {TestData.INVALID_USERNAME, TestData.INVALID_PASSWORD}
+        };
     }
 }
