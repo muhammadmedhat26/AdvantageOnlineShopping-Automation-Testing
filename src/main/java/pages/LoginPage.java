@@ -6,7 +6,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
 
-    private By userIcon = By.id("menuUser");
     private By usernameInput = By.name("username");
     private By passwordInput = By.name("password");
     private By signInButton = By.id("sign_in_btn");
@@ -17,43 +16,38 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    public LoginPage openLoginPopup() {
-        wait.until(ExpectedConditions.elementToBeClickable(userIcon)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameInput));
-        return this;
-    }
 
     public LoginPage enterUsername(String username) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameInput)).clear();
+        System.out.println("Entering username: " + username);
         driver.findElement(usernameInput).sendKeys(username);
         return this;
     }
 
     public LoginPage enterPassword(String password) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput)).clear();
+        System.out.println("Entering password: " + password);
         driver.findElement(passwordInput).sendKeys(password);
         return this;
     }
 
-    public HomePage clickSignIn() {
-        wait.until(ExpectedConditions.elementToBeClickable(signInButton)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loggedInUserLink));
-        return new HomePage(driver);
+    public void clickSignIn() {
+        System.out.println("Clicking sign in button");
+        driver.findElement(signInButton).click();
     }
 
-    public HomePage login(String username, String password) {
-        openLoginPopup();
+    public void login(String username, String password) {
         enterUsername(username);
         enterPassword(password);
-        return clickSignIn();
+        clickSignIn();
     }
 
     public LoginPage clickSignInExpectingFailure() {
         wait.until(ExpectedConditions.elementToBeClickable(signInButton)).click();
+
         wait.until(ExpectedConditions.textToBePresentInElementLocated(
                 signInErrorMessage,
                 "Incorrect"
         ));
+
         return this;
     }
 

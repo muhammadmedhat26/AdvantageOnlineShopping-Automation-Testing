@@ -61,4 +61,31 @@ public class CartTest extends BaseTest {
         updatedCartPage.openCart();
 
     }
+
+    @Test
+    public void userCanRemoveProductFromCart() {
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(USERNAME, PASSWORD);
+
+        CartPage cartPage = new CartPage(driver);
+        cartPage.openCart();
+
+        int beforeCount = cartPage.getProductsCount();
+
+        cartPage.removeProduct(
+                TestData.TestData.ProductData.SPEAKER_NAME
+        );
+
+        Assert.assertFalse(
+                cartPage.isProductDisplayed(
+                        TestData.TestData.ProductData.SPEAKER_NAME
+                )
+        );
+
+        Assert.assertEquals(
+                cartPage.getProductsCount(),
+                beforeCount - 1
+        );
+    }
 }

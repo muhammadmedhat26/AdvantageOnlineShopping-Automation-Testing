@@ -4,7 +4,6 @@ import TestData.TestData;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import pages.HomePage;
 import pages.LoginPage;
 import setup.BaseTest;
 
@@ -17,29 +16,27 @@ public class LoginTest extends BaseTest {
     public void userCanLoginSuccessfully() {
         LoginPage loginPage = new LoginPage(driver);
 
-        HomePage homePage = loginPage.login(USERNAME, PASSWORD);
+        homePage.clickUserIcon();
+        homePage.waitForLoginPopup();
+        loginPage.login(USERNAME, PASSWORD);
 
-        Assert.assertTrue(
-                homePage.isUserLoggedIn(USERNAME),
-                "User should be logged in successfully"
-        );
+        Assert.assertTrue(homePage.isUserLoggedIn(USERNAME));
     }
 
     @Test(dataProvider = "invalidLoginData")
     public void userCannotLoginWithInvalidCredentials(String username, String password) {
         LoginPage loginPage = new LoginPage(driver);
 
-        loginPage.openLoginPopup()
-                .enterUsername(username)
+        homePage.clickUserIcon();
+        homePage.waitForLoginPopup();
+        loginPage.enterUsername(username)
                 .enterPassword(password)
                 .clickSignInExpectingFailure();
 
         Assert.assertEquals(
                 loginPage.getErrorMessage(),
-                "Incorrect user name or password.",
-                "Error message is incorrect"
+                "Incorrect user name or password."
         );
-
     }
 
     @DataProvider
