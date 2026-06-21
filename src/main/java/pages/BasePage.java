@@ -20,12 +20,12 @@ public class BasePage {
     protected void waitForLoaderToDisappear() {
         try {
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.loader")));
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     protected void waitForPopupsToDisappear() {
         try {
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.PopUp")));
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 }
