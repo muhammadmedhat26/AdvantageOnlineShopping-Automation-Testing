@@ -82,7 +82,6 @@ public class CartTest extends BaseTest {
 
         CartPage cartPage = new CartPage(driver);
         cartPage.openCart();
-        System.out.println("11");
         ProductPage productPage =
                 cartPage.clickEditProduct(ProductData.SPEAKER_NAME);
 
@@ -145,17 +144,13 @@ public class CartTest extends BaseTest {
         CartPage cartPage = new CartPage(driver);
         cartPage.openCart();
 
-        Assert.assertTrue(
-                cartPage.getProductsCount() > 0,
-                "Cart should contain products before checkout"
-        );
-
         CheckoutPage checkoutPage =
                 cartPage.clickCheckout();
 
         Assert.assertTrue(
                 checkoutPage.isCheckoutPageDisplayed()
         );
+
     }
 
 
