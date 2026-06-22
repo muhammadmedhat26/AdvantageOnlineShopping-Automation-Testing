@@ -32,13 +32,15 @@ public class HomePage extends BasePage {
         System.out.println("Waiting for login popup to appear");
         new WebDriverWait(driver, Duration.ofSeconds(20))
                 .until(d -> driver.findElement(loginButton).isDisplayed() && driver.findElement(createAccountLink).isDisplayed());
-        waitForPopupsToDisappear();
+        //waitForPopupsToDisappear();
     }
 
     public void clickCreateAccount() {
         System.out.println("Clicking create account link");
         waitForLoaderToDisappear();
-        driver.findElement(createAccountLink).click();
+        wait.until(
+                ExpectedConditions.elementToBeClickable(createAccountLink)
+        ).click();
     }
 
     public void clickSpeakersCategory() {

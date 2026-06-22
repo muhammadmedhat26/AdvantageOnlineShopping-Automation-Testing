@@ -7,13 +7,25 @@ import org.openqa.selenium.JavascriptExecutor;
 
 public class CartPage extends BasePage {
 
-    private By cartIcon = By.id("shoppingCartLink");
+    private By cartIcon = By.id("menuCart");
     private By productNames = By.cssSelector("label.roboto-regular.productName");
     private By checkoutButton = By.id("checkOutButton");
+    private By cartCounter = By.cssSelector("span.cart.ng-binding");
+
+    public int getCartCounter() {
+
+        String count = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(cartCounter)
+        ).getText().trim();
+
+        return Integer.parseInt(count);
+    }
 
     public CartPage(WebDriver driver) {
+
         super(driver);
     }
+
     public CartPage openCart() {
 
         waitForPopupsToDisappear();
@@ -22,15 +34,32 @@ public class CartPage extends BasePage {
         wait.until(
                 ExpectedConditions.elementToBeClickable(cartIcon)
         ).click();
+        waitForLoaderToDisappear();
 
         wait.until(
                 ExpectedConditions.urlContains("shoppingCart")
         );
+        waitForLoaderToDisappear();
+        waitForPopupsToDisappear();
+        System.out.println(
+                "Products count = " +
+                        driver.findElements(productNames).size()
+        );
+
+        return this;
+    }
+    public CartPage waitForProductToLoad(String productName) {
+        By product = By.xpath("//label[normalize-space()='" + productName + "']");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(product));
 
         return this;
     }
 
     public int getProductsCount() {
+
+        waitForLoaderToDisappear();
+
         return driver.findElements(productNames).size();
     }
 

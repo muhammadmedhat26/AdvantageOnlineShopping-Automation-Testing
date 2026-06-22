@@ -11,6 +11,7 @@ public class LoginPage extends BasePage {
     private By signInButton = By.id("sign_in_btn");
     private By signInErrorMessage = By.id("signInResultMessage");
     private By loggedInUserLink = By.id("menuUserLink");
+    private By forgotPasswordLink = By.xpath("//a[contains(text(),'Forgot your password?')]");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -55,5 +56,10 @@ public class LoginPage extends BasePage {
         return wait.until(
                 ExpectedConditions.visibilityOfElementLocated(signInErrorMessage)
         ).getText().trim();
+    }
+
+    public void clickForgotPassword() {
+        System.out.println("Clicking forgot password link");
+        driver.findElement(forgotPasswordLink).click();
     }
 }

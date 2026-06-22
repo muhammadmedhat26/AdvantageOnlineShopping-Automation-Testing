@@ -5,6 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.LoginPage;
+import pages.RegistrationPage;
 import setup.BaseTest;
 
 import static TestData.TestData.PASSWORD;
@@ -14,13 +15,16 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void userCanLoginSuccessfully() {
-        LoginPage loginPage = new LoginPage(driver);
 
         homePage.clickUserIcon();
         homePage.waitForLoginPopup();
+
+        LoginPage loginPage = new LoginPage(driver);
         loginPage.login(USERNAME, PASSWORD);
 
-        Assert.assertTrue(homePage.isUserLoggedIn(USERNAME));
+        Assert.assertTrue(
+                homePage.isUserLoggedIn(USERNAME)
+        );
     }
 
     @Test(dataProvider = "invalidLoginData")
@@ -46,5 +50,38 @@ public class LoginTest extends BaseTest {
                 {TestData.INVALID_USERNAME, PASSWORD},
                 {TestData.INVALID_USERNAME, TestData.INVALID_PASSWORD}
         };
+    }
+
+
+    //UI issue (the creat account button is outside the visible screen)
+    @Test
+    public void userCanNavigateToRegistrationPage() {
+        homePage.clickUserIcon();
+        homePage.waitForLoginPopup();
+        homePage.clickCreateAccount();
+
+        System.out.println(driver.getCurrentUrl());
+
+        Assert.assertTrue(
+                driver.getCurrentUrl().contains("register"),
+                "User should be navigated to registration page"
+        );
+    }
+
+    @Test
+    public void forgotPasswordLinkIsNotWorking() {
+        homePage.clickUserIcon();
+        homePage.waitForLoginPopup();
+
+        String currentUrl = driver.getCurrentUrl();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clickForgotPassword();
+
+        Assert.assertEquals(
+                driver.getCurrentUrl(),
+                currentUrl,
+                "Forgot password link should not navigate because it is not working"
+        );
     }
 }
