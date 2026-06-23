@@ -38,7 +38,9 @@ public class HomePage extends BasePage {
     public void clickCreateAccount() {
         System.out.println("Clicking create account link");
         waitForLoaderToDisappear();
-        driver.findElement(createAccountLink).click();
+        wait.until(
+                ExpectedConditions.elementToBeClickable(createAccountLink)
+        ).click();
     }
 
     public void clickSpeakersCategory() {

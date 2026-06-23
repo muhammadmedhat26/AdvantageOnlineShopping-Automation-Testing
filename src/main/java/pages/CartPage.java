@@ -4,16 +4,31 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class CartPage extends BasePage {
 
-    private By cartIcon = By.id("shoppingCartLink");
+    private By cartIcon = By.id("menuCart");
     private By productNames = By.cssSelector("label.roboto-regular.productName");
     private By checkoutButton = By.id("checkOutButton");
+    private By cartCounter = By.cssSelector("span.cart.ng-binding");
+    private By orderPaymentHeader = By.xpath("//h3[contains(normalize-space(),'ORDER PAYMENT')]");
+    public int getCartCounter() {
+
+        String count = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(cartCounter)
+        ).getText().trim();
+
+        return Integer.parseInt(count);
+    }
 
     public CartPage(WebDriver driver) {
+
         super(driver);
     }
+
     public CartPage openCart() {
 
         waitForPopupsToDisappear();
@@ -22,15 +37,35 @@ public class CartPage extends BasePage {
         wait.until(
                 ExpectedConditions.elementToBeClickable(cartIcon)
         ).click();
+        waitForLoaderToDisappear();
 
         wait.until(
                 ExpectedConditions.urlContains("shoppingCart")
         );
+        waitForLoaderToDisappear();
+        waitForPopupsToDisappear();
+        System.out.println(
+                "Products count = " +
+                        driver.findElements(productNames).size()
+        );
+
+        return this;
+    }
+    public CartPage waitForProductToLoad(String productName) {
+        By product = By.xpath("//label[normalize-space()='" + productName + "']");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(product));
 
         return this;
     }
 
     public int getProductsCount() {
+
+        waitForLoaderToDisappear();
+
+        WebDriverWait slowWait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        slowWait.until((ExpectedConditions.elementToBeClickable(cartCounter))).click();
+
         return driver.findElements(productNames).size();
     }
 
@@ -66,14 +101,32 @@ public class CartPage extends BasePage {
                         "/ancestor::tr//a[contains(@class,'edit')]"
         );
 
+        WebDriverWait slowWait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        slowWait.until((ExpectedConditions.elementToBeClickable(editButton))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(editButton)).click();
 
         return new ProductPage(driver);
     }
 
     public CheckoutPage clickCheckout() {
-        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
+
+        WebDriverWait slowWait =
+                new WebDriverWait(driver, Duration.ofSeconds(30));
+
+        slowWait.until(
+                ExpectedConditions.elementToBeClickable(checkoutButton)
+        ).click();
+
+        waitForLoaderToDisappear();
+
+        slowWait.until(
+                ExpectedConditions.urlContains("orderPayment")
+        );
+
+        slowWait.until(
+                ExpectedConditions.visibilityOfElementLocated(orderPaymentHeader)
+        );
+
         return new CheckoutPage(driver);
     }
 }
