@@ -43,7 +43,7 @@ public class HomePage extends BasePage {
 
     public void clickSpeakersCategory() {
         System.out.println("Clicking speakers category");
-        waitForLoaderToDisappear();
+        slowWait.until(ExpectedConditions.elementToBeClickable(speakersCategory));
         driver.findElement(speakersCategory).click();
     }
 
@@ -62,7 +62,9 @@ public class HomePage extends BasePage {
 
     public void clickDeleteAccount() {
         waitForLoaderToDisappear();
+        wait.until(ExpectedConditions.elementToBeClickable(deleteAccountButton));
         driver.findElement(deleteAccountButton).click();
+        System.out.println("Clicked delete account button");
     }
 
     public boolean isUserLoggedIn(String username) {
@@ -76,5 +78,15 @@ public class HomePage extends BasePage {
         } catch (Exception e) {
             return false;
         }
+    }
+
+
+    public ProductPage clickProductByName(String productName) {
+        waitForLoaderToDisappear();
+        waitForPopupsToDisappear();
+        slowWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(),'" + productName + "')]")));
+        By productLink = By.xpath("//*[contains(text(),'" + productName + "')]");
+        driver.findElement(productLink).click();
+        return new ProductPage(driver);
     }
 }

@@ -11,21 +11,25 @@ public class BasePage {
 
     protected WebDriver driver;
     protected WebDriverWait wait;
+    protected WebDriverWait slowWait;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.slowWait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
     protected void waitForLoaderToDisappear() {
         try {
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.loader")));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     protected void waitForPopupsToDisappear() {
         try {
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.PopUp")));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 }

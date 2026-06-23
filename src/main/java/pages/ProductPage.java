@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -17,32 +18,32 @@ public class ProductPage extends BasePage {
     }
 
     public boolean isProductPageDisplayed() {
-        return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(productName)
-        ).isDisplayed();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(productName)).isDisplayed();
     }
 
     public String getProductName() {
-        return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(productName)
-        ).getText().trim();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(productName)).getText().trim();
     }
 
     public int getQuantity() {
-        String quantityValue = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(quantityInput)
-        ).getAttribute("value");
+        String quantityValue = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput)).getAttribute("value");
+        System.out.println("Current quantity value: " + quantityValue);
+        try {
+            return Integer.parseInt(quantityValue);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
 
-        return Integer.parseInt(quantityValue);
+    public String getQuantityRaw() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput)).getAttribute("value");
     }
 
     public ProductPage increaseQuantity() {
         int before = getQuantity();
 
-        wait.until(
-                ExpectedConditions.elementToBeClickable(plusButton)
-        ).click();
-
+        wait.until(ExpectedConditions.elementToBeClickable(plusButton)).click();
+        System.out.println("Clicked plus button to increase quantity +1");
         wait.until(driver -> getQuantity() == before + 1);
 
         return this;
@@ -65,4 +66,16 @@ public class ProductPage extends BasePage {
         waitForPopupsToDisappear();
         return this;
     }
+
+
+    public ProductPage typeQuantity(String value) {
+        var field = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput));
+        System.out.println("Typing quantity value: " + value);
+        field.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        field.sendKeys(Keys.DELETE);
+        field.sendKeys(value);
+        return this;
+    }
+
+
 }
