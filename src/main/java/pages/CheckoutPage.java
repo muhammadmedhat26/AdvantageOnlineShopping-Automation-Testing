@@ -21,7 +21,7 @@ public class CheckoutPage extends BasePage {
     private By stateRegionInput = By.xpath("//sec-view[@a-hint='State / Province / Region']//input");
 
     private By saveChangesCheckbox = By.name("agree_agreement");
-    private By editShippingNextButton = By.xpath("//sec-sender[@a-value='NEXT']");
+    private By editShippingNextButton = By.cssSelector("sec-sender[a-value='NEXT']");
     private By editShippingBackButton = By.xpath("//a[normalize-space()='BACK']");
 
     private By editShippingDetailsForm = By.id("userDetailsEditMode");
@@ -40,12 +40,36 @@ public class CheckoutPage extends BasePage {
     //payment method form locators
     // ======================================================
     private By safePayOption = By.xpath("//div[contains(@class,'imgRadioButton')][1]");
-    private By masterCardOption = By.xpath("//div[contains(@class,'imgRadioButton')][2]");
     private By safePayUsername = By.name("safepay_username");
     private By safePayPassword = By.name("safepay_password");
     private By payNowButton = By.id("pay_now_btn_SAFEPAY");
+
+    private By masterCardOption = By.xpath("//div[contains(@class,'imgRadioButton')][2]");
+    private By cardNumberInput = By.name("card_number");
+    private By cvvNumberInput = By.name("cvv_number");
+    private By expirationMonthDropdown = By.xpath("//sec-view[@a-hint='MM']//select");
+    private By expirationYearDropdown = By.xpath("//sec-view[@a-hint='YYYY']//select");
+    private By cardHolderNameInput = By.name("cardholder_name");
+    private By saveCardCheckbox = By.name("save_master_credit");
+    private By payNowMasterCardButton = By.id("pay_now_btn_ManualPayment");
+    private By editMasterCardLink =
+            By.xpath("//label[normalize-space()='Edit']");
+
+
     private By backToShippingDetailsLink = By.xpath("//a[contains(normalize-space(),'Back to shipping details')]");
     private By saveSafePayCheckbox = By.name("save_safepay");
+
+//==========================================
+//tracking receipt
+//==========================================
+    private By orderNumberMessage =
+            By.xpath("//*[contains(normalize-space(),'Your order number')]");
+
+    private By trackingNumberMessage =
+            By.xpath("//*[contains(normalize-space(),'Your tracking number')]");
+
+    private By orderSummaryTitle =
+            By.xpath("//*[contains(normalize-space(),'Order Summary')]");
 
 
     public CheckoutPage(WebDriver driver) {
@@ -80,6 +104,14 @@ public class CheckoutPage extends BasePage {
 // shipping details page actions
 // ======================================================
 
+    public boolean isEditShippingDetailsFormDisplayed() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        editShippingDetailsForm
+                )
+        ).isDisplayed();
+    }
     public CheckoutPage clickEditShippingDetails() {
         wait.until(ExpectedConditions.elementToBeClickable(editShippingDetailsLink)).click();
 
@@ -91,10 +123,14 @@ public class CheckoutPage extends BasePage {
     }
 
     public CheckoutPage clickNext() {
-        wait.until(ExpectedConditions.elementToBeClickable(nextButton)).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(nextButton))
+                .click();
 
         wait.until(
-                ExpectedConditions.visibilityOfElementLocated(paymentMethodSection)
+                ExpectedConditions.visibilityOfElementLocated(
+                        safePayUsername
+                )
         );
 
         return this;
@@ -163,10 +199,13 @@ public class CheckoutPage extends BasePage {
     }
 
     public CheckoutPage clickEditShippingNext() {
+
         wait.until(ExpectedConditions.elementToBeClickable(editShippingNextButton)).click();
 
+        waitForLoaderToDisappear();
+
         wait.until(
-                ExpectedConditions.visibilityOfElementLocated(paymentMethodSection)
+                ExpectedConditions.visibilityOfElementLocated(safePayOption)
         );
 
         return this;
@@ -183,17 +222,17 @@ public class CheckoutPage extends BasePage {
     }
 
 
+// ======================================================//
+//                  payment methods                      //
+// ======================================================//
+
+
 // ======================================================
-// payment method actions
+// safepay payment actions
 // ======================================================
 
     public CheckoutPage selectSafePay() {
         wait.until(ExpectedConditions.elementToBeClickable(safePayOption)).click();
-        return this;
-    }
-
-    public CheckoutPage selectMasterCard() {
-        wait.until(ExpectedConditions.elementToBeClickable(masterCardOption)).click();
         return this;
     }
 
@@ -224,10 +263,86 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
-    public CheckoutPage clickPayNow() {
+    public CheckoutPage clickPayNowSafePay() {
         wait.until(ExpectedConditions.elementToBeClickable(payNowButton)).click();
         return this;
     }
+
+// ======================================================
+// master card payment actions
+// ======================================================
+
+    public CheckoutPage selectMasterCard() {
+        wait.until(ExpectedConditions.elementToBeClickable(masterCardOption)).click();
+        return this;
+    }
+
+    public CheckoutPage enterCardNumber(String cardNumber) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(cardNumberInput)).clear();
+        driver.findElement(cardNumberInput).sendKeys(cardNumber);
+        return this;
+    }
+
+    public CheckoutPage enterCvvNumber(String cvv) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(cvvNumberInput)).clear();
+        driver.findElement(cvvNumberInput).sendKeys(cvv);
+        return this;
+    }
+
+    public CheckoutPage selectExpirationMonth(String month) {
+        Select select = new Select(
+                wait.until(ExpectedConditions.visibilityOfElementLocated(expirationMonthDropdown))
+        );
+        select.selectByVisibleText(month);
+        return this;
+    }
+
+    public CheckoutPage selectExpirationYear(String year) {
+        Select select = new Select(
+                wait.until(ExpectedConditions.visibilityOfElementLocated(expirationYearDropdown))
+        );
+        select.selectByVisibleText(year);
+        return this;
+    }
+
+    public CheckoutPage enterCardHolderName(String name) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(cardHolderNameInput)).clear();
+        driver.findElement(cardHolderNameInput).sendKeys(name);
+        return this;
+    }
+
+
+    public CheckoutPage clickPayNowMasterCard() {
+        wait.until(ExpectedConditions.elementToBeClickable(payNowMasterCardButton)).click();
+        return this;
+    }
+
+    public CheckoutPage clickEditMasterCard() {
+        wait.until(ExpectedConditions.elementToBeClickable(editMasterCardLink)).click();
+        return this;
+
+    }
+    public CheckoutPage openMasterCardForm() {
+
+        if (!driver.findElements(editMasterCardLink).isEmpty()) {
+
+            wait.until(
+                    ExpectedConditions.elementToBeClickable(editMasterCardLink)
+            ).click();
+        }
+
+        return this;
+    }
+
+    public boolean isOrderConfirmationDisplayed() {
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(orderNumberMessage));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(trackingNumberMessage));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(orderSummaryTitle));
+
+        return true;
+    }
+
 
 
 
@@ -255,5 +370,55 @@ public class CheckoutPage extends BasePage {
         enterSafePayPassword(password);
 
         return this;
+    }
+
+    public CheckoutPage enterMasterCardDetails(
+            String cardNumber,
+            String cvv,
+            String month,
+            String year,
+            String cardHolderName) {
+
+
+        selectMasterCard();
+        openMasterCardForm();
+        enterCardNumber(cardNumber);
+        enterCvvNumber(cvv);
+        selectExpirationMonth(month);
+        selectExpirationYear(year);
+        enterCardHolderName(cardHolderName);
+
+        return this;
+    }
+
+
+    //================================================
+    //getters
+    //================================================
+    public String getSafePayUsername() {
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(safePayUsername)
+        ).getAttribute("value");
+    }
+
+    public String getSafePayPassword() {
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(safePayPassword)
+        ).getAttribute("value");
+    }
+
+    public String getCardNumber() {
+        return driver.findElement(cardNumberInput)
+                .getAttribute("value");
+    }
+
+    public String getCvvNumber() {
+        return driver.findElement(cvvNumberInput)
+                .getAttribute("value");
+    }
+
+    public String getCardHolderName() {
+        return driver.findElement(cardHolderNameInput)
+                .getAttribute("value");
     }
 }

@@ -2,6 +2,8 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -27,5 +29,10 @@ public class BasePage {
         try {
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.PopUp")));
         } catch (Exception ignored) {}
+    }
+
+    protected void scrollToElement(WebElement element) {
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(element).perform();
     }
 }
