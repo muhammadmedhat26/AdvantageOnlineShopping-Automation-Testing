@@ -14,14 +14,14 @@ public class ProductPage extends BasePage {
     private By minusButton = By.cssSelector("div.minus");
     private By outOfStockMessage = By.cssSelector("label.ng-binding");
 
+    public ProductPage(WebDriver driver) {
+        super(driver);
+    }
+
     public String getOutOfStockMessage() {
         return wait.until(
                 ExpectedConditions.visibilityOfElementLocated(outOfStockMessage)
         ).getText().trim();
-    }
-
-    public ProductPage(WebDriver driver) {
-        super(driver);
     }
 
     public boolean isProductPageDisplayed() {

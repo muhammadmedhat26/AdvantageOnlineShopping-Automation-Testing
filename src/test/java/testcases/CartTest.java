@@ -2,16 +2,11 @@ package testcases;
 
 import TestData.TestData.ProductData;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.CartPage;
 import pages.CheckoutPage;
-import pages.LoginPage;
 import pages.ProductPage;
 import setup.BaseTest;
-
-import static TestData.TestData.PASSWORD;
-import static TestData.TestData.USERNAME;
 
 public class CartTest extends BaseTest {
 
@@ -78,7 +73,7 @@ public class CartTest extends BaseTest {
 
 
     @Test(groups = "requiresLogin")
-    public void userCanDecreaseProductQuantityFromCart(){
+    public void userCanDecreaseProductQuantityFromCart() {
 
         CartPage cartPage = new CartPage(driver);
         cartPage.openCart();
@@ -113,8 +108,9 @@ public class CartTest extends BaseTest {
 
     @Test(groups = "requiresLogin")
     public void userCanAddLargeQuantityMultipleTimes() {
-
-        ProductPage productPage = new ProductPage(driver);
+        CartPage cartPage = new CartPage(driver);
+        cartPage.openCart();
+        ProductPage productPage = cartPage.clickEditProduct(TestData.TestData.ProductData.SPEAKER_NAME);
 
         int beforeCounter =
                 new CartPage(driver).getCartCounter();

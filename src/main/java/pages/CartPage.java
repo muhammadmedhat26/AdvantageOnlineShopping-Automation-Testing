@@ -3,7 +3,6 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -13,20 +12,22 @@ public class CartPage extends BasePage {
     private By cartIcon = By.id("menuCart");
     private By productNames = By.cssSelector("label.roboto-regular.productName");
     private By checkoutButton = By.id("checkOutButton");
-    private By cartCounter = By.cssSelector("span.cart.ng-binding");
+    private By cartCounter = By.cssSelector("nav>ul>li>a>span.cart.ng-binding");
     private By orderPaymentHeader = By.xpath("//h3[contains(normalize-space(),'ORDER PAYMENT')]");
-    public int getCartCounter() {
-
-        String count = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(cartCounter)
-        ).getText().trim();
-
-        return Integer.parseInt(count);
-    }
 
     public CartPage(WebDriver driver) {
 
         super(driver);
+    }
+
+    public int getCartCounter() {
+
+        String count = slowWait.until(
+                ExpectedConditions.visibilityOfElementLocated(cartCounter)
+        ).getText().trim();
+        System.out.println("Cart items counter value: " + count);
+
+        return Integer.parseInt(count);
     }
 
     public CartPage openCart() {
@@ -51,6 +52,7 @@ public class CartPage extends BasePage {
 
         return this;
     }
+
     public CartPage waitForProductToLoad(String productName) {
         By product = By.xpath("//label[normalize-space()='" + productName + "']");
 
@@ -64,7 +66,7 @@ public class CartPage extends BasePage {
         waitForLoaderToDisappear();
 
         WebDriverWait slowWait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        slowWait.until((ExpectedConditions.elementToBeClickable(cartCounter))).click();
+        slowWait.until((ExpectedConditions.visibilityOfElementLocated(cartCounter)));
 
         return driver.findElements(productNames).size();
     }
