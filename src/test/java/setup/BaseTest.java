@@ -36,11 +36,11 @@ public class BaseTest {
     }
 
     @BeforeMethod(dependsOnMethods = "loginUserBeforeTest", onlyForGroups = "checkoutTests")
-    public void navigateToCheckoutPage(){
+    public void navigateToCheckoutPage() {
         CartPage cartPage = new CartPage(driver);
         cartPage.openCart();
 
-         checkoutPage = cartPage.clickCheckout();
+        checkoutPage = cartPage.clickCheckout();
     }
 
     @AfterMethod

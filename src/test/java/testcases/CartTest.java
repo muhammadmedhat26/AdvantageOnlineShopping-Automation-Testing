@@ -17,10 +17,7 @@ public class CartTest extends BaseTest {
         CartPage cartPage = new CartPage(driver);
         cartPage.openCart();
 
-        Assert.assertTrue(
-                driver.getCurrentUrl().contains("shoppingCart"),
-                "Cart page should be opened"
-        );
+        Assert.assertTrue(driver.getCurrentUrl().contains("shoppingCart"), "Cart page should be opened");
     }
 
 
@@ -33,10 +30,7 @@ public class CartTest extends BaseTest {
 
         System.out.println("Cart products count: " + cartPage.getProductsCount());
 
-        Assert.assertTrue(
-                cartPage.getProductsCount() >= 0,
-                "Cart products count should be zero or more"
-        );
+        Assert.assertTrue(cartPage.getProductsCount() >= 0, "Cart products count should be zero or more");
     }
 
     @Test(groups = "requiresLogin")
@@ -46,24 +40,17 @@ public class CartTest extends BaseTest {
         cartPage.openCart();
 
 
-        ProductPage productPage =
-                cartPage.clickEditProduct(TestData.TestData.ProductData.SPEAKER_NAME);
+        ProductPage productPage = cartPage.clickEditProduct(TestData.TestData.ProductData.SPEAKER_NAME);
 
         Assert.assertTrue(productPage.isProductPageDisplayed());
 
-        Assert.assertEquals(
-                productPage.getProductName(),
-                TestData.TestData.ProductData.SPEAKER_NAME
-        );
+        Assert.assertEquals(productPage.getProductName(), TestData.TestData.ProductData.SPEAKER_NAME);
 
         int beforeEdit = productPage.getQuantity();
 
         productPage.increaseQuantity();
 
-        Assert.assertEquals(
-                productPage.getQuantity(),
-                beforeEdit + 1
-        );
+        Assert.assertEquals(productPage.getQuantity(), beforeEdit + 1);
 
         productPage.addToCart();
 
@@ -77,25 +64,18 @@ public class CartTest extends BaseTest {
 
         CartPage cartPage = new CartPage(driver);
         cartPage.openCart();
-        ProductPage productPage =
-                cartPage.clickEditProduct(ProductData.SPEAKER_NAME);
+        ProductPage productPage = cartPage.clickEditProduct(ProductData.SPEAKER_NAME);
 
         Assert.assertTrue(productPage.isProductPageDisplayed());
 
-        Assert.assertEquals(
-                productPage.getProductName(),
-                ProductData.SPEAKER_NAME
-        );
+        Assert.assertEquals(productPage.getProductName(), ProductData.SPEAKER_NAME);
 
         int beforeEdit = productPage.getQuantity();
 
         if (beforeEdit > 1) {
             productPage.decreaseQuantity();
 
-            Assert.assertEquals(
-                    productPage.getQuantity(),
-                    beforeEdit - 1
-            );
+            Assert.assertEquals(productPage.getQuantity(), beforeEdit - 1);
         } else {
             System.out.println("Quantity is already at minimum (1), cannot decrease further.");
         }
@@ -112,8 +92,7 @@ public class CartTest extends BaseTest {
         cartPage.openCart();
         ProductPage productPage = cartPage.clickEditProduct(TestData.TestData.ProductData.SPEAKER_NAME);
 
-        int beforeCounter =
-                new CartPage(driver).getCartCounter();
+        int beforeCounter = new CartPage(driver).getCartCounter();
 
 
         while (productPage.getQuantity() < 5) {
@@ -125,13 +104,9 @@ public class CartTest extends BaseTest {
             productPage.addToCart();
         }
 
-        int afterCounter =
-                new CartPage(driver).getCartCounter();
+        int afterCounter = new CartPage(driver).getCartCounter();
 
-        Assert.assertEquals(
-                afterCounter,
-                beforeCounter + 50
-        );
+        Assert.assertEquals(afterCounter, beforeCounter + 50);
     }
 
     @Test(groups = "requiresLogin")
@@ -140,12 +115,9 @@ public class CartTest extends BaseTest {
         CartPage cartPage = new CartPage(driver);
         cartPage.openCart();
 
-        CheckoutPage checkoutPage =
-                cartPage.clickCheckout();
+        CheckoutPage checkoutPage = cartPage.clickCheckout();
 
-        Assert.assertTrue(
-                checkoutPage.isCheckoutPageDisplayed()
-        );
+        Assert.assertTrue(checkoutPage.isCheckoutPageDisplayed(), "Checkout page should be displayed");
 
     }
 

@@ -17,6 +17,10 @@ public class HomePage extends BasePage {
     private By loginButton = By.id("sign_in_btn");
     private By myAccountLabel = By.xpath("(//label[contains(text(),'My account')])[2]");
     private By deleteAccountButton = By.xpath("//div[contains(text(),'Delete Account')]");
+    private By tabletsCategory = By.id("tabletsTxt");
+    private By searchIcon = By.id("menuSearch");
+    private By loginCloseBtn = By.className("closeBtn");
+    private By eliteBookDetailsLink = By.id("details_10");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -24,8 +28,20 @@ public class HomePage extends BasePage {
 
     public void clickUserIcon() {
         System.out.println("Clicking user icon");
+        waitForLoaderToDisappear();
         wait.until(ExpectedConditions.visibilityOfElementLocated(userIcon));
         driver.findElement(userIcon).click();
+    }
+
+    public void clickSearchIcon() {
+        System.out.println("Clicking search icon");
+        waitForLoaderToDisappear();
+        wait.until(ExpectedConditions.elementToBeClickable(searchIcon)).click();
+    }
+
+    public void quitLoginPopup() {
+        System.out.println("Quitting login popup");
+        wait.until(ExpectedConditions.elementToBeClickable(loginCloseBtn)).click();
     }
 
     public void waitForLoginPopup() {
@@ -33,6 +49,7 @@ public class HomePage extends BasePage {
         new WebDriverWait(driver, Duration.ofSeconds(20))
                 .until(d -> driver.findElement(loginButton).isDisplayed() && driver.findElement(createAccountLink).isDisplayed());
         waitForPopupsToDisappear();
+        waitForLoaderToDisappear();
     }
 
     public void clickCreateAccount() {
@@ -47,6 +64,13 @@ public class HomePage extends BasePage {
         System.out.println("Clicking speakers category");
         slowWait.until(ExpectedConditions.elementToBeClickable(speakersCategory));
         driver.findElement(speakersCategory).click();
+    }
+
+    public void clickTabletsCategory() {
+        System.out.println("Clicking tablets category");
+        slowWait.until(ExpectedConditions.elementToBeClickable(tabletsCategory));
+        driver.findElement(tabletsCategory).click();
+        wait.until(ExpectedConditions.urlContains("Tablets"));
     }
 
     public void clickCartIcon() {
@@ -91,4 +115,11 @@ public class HomePage extends BasePage {
         driver.findElement(productLink).click();
         return new ProductPage(driver);
     }
+
+    public ProductPage clickEliteBookDetails() {
+        System.out.println("Clicking HP EliteBook Folio details link");
+        slowWait.until(ExpectedConditions.elementToBeClickable(eliteBookDetailsLink)).click();
+        return new ProductPage(driver);
+    }
+
 }

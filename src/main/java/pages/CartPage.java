@@ -22,9 +22,7 @@ public class CartPage extends BasePage {
 
     public int getCartCounter() {
 
-        String count = slowWait.until(
-                ExpectedConditions.visibilityOfElementLocated(cartCounter)
-        ).getText().trim();
+        String count = slowWait.until(ExpectedConditions.visibilityOfElementLocated(cartCounter)).getText().trim();
         System.out.println("Cart items counter value: " + count);
 
         return Integer.parseInt(count);
@@ -35,20 +33,13 @@ public class CartPage extends BasePage {
         waitForPopupsToDisappear();
         waitForLoaderToDisappear();
 
-        wait.until(
-                ExpectedConditions.elementToBeClickable(cartIcon)
-        ).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cartIcon)).click();
         waitForLoaderToDisappear();
 
-        wait.until(
-                ExpectedConditions.urlContains("shoppingCart")
-        );
+        wait.until(ExpectedConditions.urlContains("shoppingCart"));
         waitForLoaderToDisappear();
         waitForPopupsToDisappear();
-        System.out.println(
-                "Products count = " +
-                        driver.findElements(productNames).size()
-        );
+        System.out.println("Products count = " + driver.findElements(productNames).size());
 
         return this;
     }
@@ -72,9 +63,7 @@ public class CartPage extends BasePage {
     }
 
     public boolean isProductDisplayed(String productName) {
-        By product = By.xpath(
-                "//label[normalize-space()='" + productName + "']"
-        );
+        By product = By.xpath("//label[normalize-space()='" + productName + "']");
 
         return !driver.findElements(product).isEmpty();
     }
@@ -82,26 +71,19 @@ public class CartPage extends BasePage {
     public CartPage removeProduct(String productName) {
         int beforeCount = getProductsCount();
 
-        By removeButton = By.xpath(
-                "//label[normalize-space()='" + productName + "']" +
-                        "/ancestor::tr//a[contains(@class,'remove')]"
-        );
+        By removeButton = By.xpath("//label[normalize-space()='" + productName + "']"
+                + "/ancestor::tr//a[contains(@class,'remove')]");
 
         wait.until(ExpectedConditions.elementToBeClickable(removeButton)).click();
 
-        wait.until(driver ->
-                !isProductDisplayed(productName)
-                        && getProductsCount() == beforeCount - 1
-        );
+        wait.until(driver -> !isProductDisplayed(productName) && getProductsCount() == beforeCount - 1);
 
         return this;
     }
 
     public ProductPage clickEditProduct(String productName) {
-        By editButton = By.xpath(
-                "//label[normalize-space()='" + productName + "']" +
-                        "/ancestor::tr//a[contains(@class,'edit')]"
-        );
+        By editButton = By.xpath("//label[normalize-space()='" + productName + "']"
+                + "/ancestor::tr//a[contains(@class,'edit')]");
 
         WebDriverWait slowWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         slowWait.until((ExpectedConditions.elementToBeClickable(editButton))).click();
@@ -112,22 +94,16 @@ public class CartPage extends BasePage {
 
     public CheckoutPage clickCheckout() {
 
-        WebDriverWait slowWait =
-                new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebDriverWait slowWait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        System.out.println("Products count = " + driver.findElements(productNames).size());
 
-        slowWait.until(
-                ExpectedConditions.elementToBeClickable(checkoutButton)
-        ).click();
+        slowWait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
 
         waitForLoaderToDisappear();
 
-        slowWait.until(
-                ExpectedConditions.urlContains("orderPayment")
-        );
+        slowWait.until(ExpectedConditions.urlContains("orderPayment"));
 
-        slowWait.until(
-                ExpectedConditions.visibilityOfElementLocated(orderPaymentHeader)
-        );
+        slowWait.until(ExpectedConditions.visibilityOfElementLocated(orderPaymentHeader));
 
         return new CheckoutPage(driver);
     }

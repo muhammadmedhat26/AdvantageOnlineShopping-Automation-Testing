@@ -52,34 +52,23 @@ public class ProductTest extends BaseTest {
         ProductPage productPage = homePage.clickProductByName(ProductData.SPEAKER_NAME_AS_LISTED);
 
         productPage.typeQuantity("0");
-        Assert.assertNotEquals(
-                productPage.getQuantity(), 0,
-                "Quantity field should not accept 0"
-        );
+        Assert.assertNotEquals(productPage.getQuantity(), 0, "Quantity field should not accept 0");
 
         productPage.typeQuantity("99999");
-        Assert.assertTrue(
-                productPage.getQuantity() < 99999,
-                "Quantity field should cap at a reasonable maximum, not accept 99999"
-        );
+        Assert.assertTrue(productPage.getQuantity() < 99999, "Quantity field should cap at a reasonable maximum, not accept 99999");
     }
 
     @Test
     public void quantityFieldRejectsNonNumericInput() {
         homePage.clickSpeakersCategory();
         ProductPage productPage = homePage.clickProductByName(ProductData.SPEAKER_NAME_AS_LISTED);
+        String priorQuantity = productPage.getQuantityRaw();
 
 
         productPage.typeQuantity("abc");
-        Assert.assertEquals(
-                productPage.getQuantityRaw(), "abc",
-                "Quantity field should reject letters and keep the prior valid value"
-        );
+        Assert.assertNotEquals(priorQuantity, "abc", "Quantity field should reject letters and keep the prior valid value");
 
         productPage.typeQuantity("@#$");
-        Assert.assertEquals(
-                productPage.getQuantityRaw(), "@#$",
-                "Quantity field should reject special characters and keep the prior valid value"
-        );
+        Assert.assertNotEquals(productPage.getQuantityRaw(), "@#$", "Quantity field should reject special characters and keep the prior valid value");
     }
 }

@@ -76,7 +76,7 @@ public class ProductPage extends BasePage {
 
 
     public ProductPage typeQuantity(String value) {
-        var field = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput));
+        var field = slowWait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput));
         System.out.println("Typing quantity value: " + value);
         field.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         field.sendKeys(Keys.DELETE);
