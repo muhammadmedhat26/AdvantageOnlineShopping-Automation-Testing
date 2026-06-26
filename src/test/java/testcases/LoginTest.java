@@ -5,7 +5,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.LoginPage;
-import pages.RegistrationPage;
 import setup.BaseTest;
 
 import static TestData.TestData.PASSWORD;
@@ -78,10 +77,6 @@ public class LoginTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.clickForgotPassword();
 
-        Assert.assertEquals(
-                driver.getCurrentUrl(),
-                currentUrl,
-                "Forgot password link should not navigate because it is not working"
-        );
+        Assert.assertNotEquals(driver.getCurrentUrl(), currentUrl, "Forgot password link should navigate to a reset password page,");
     }
 }

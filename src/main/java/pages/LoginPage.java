@@ -10,7 +10,6 @@ public class LoginPage extends BasePage {
     private By passwordInput = By.name("password");
     private By signInButton = By.id("sign_in_btn");
     private By signInErrorMessage = By.id("signInResultMessage");
-    private By loggedInUserLink = By.id("menuUserLink");
     private By forgotPasswordLink = By.xpath("//a[contains(text(),'Forgot your password?')]");
 
     public LoginPage(WebDriver driver) {
@@ -32,6 +31,8 @@ public class LoginPage extends BasePage {
 
     public void clickSignIn() {
         System.out.println("Clicking sign in button");
+        wait.until(ExpectedConditions.elementToBeClickable(signInButton));
+        waitForLoaderToDisappear();
         driver.findElement(signInButton).click();
     }
 
@@ -44,10 +45,7 @@ public class LoginPage extends BasePage {
     public LoginPage clickSignInExpectingFailure() {
         wait.until(ExpectedConditions.elementToBeClickable(signInButton)).click();
 
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(
-                signInErrorMessage,
-                "Incorrect"
-        ));
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(signInErrorMessage, "Incorrect"));
 
         return this;
     }
