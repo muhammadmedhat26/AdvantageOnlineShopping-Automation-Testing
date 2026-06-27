@@ -85,5 +85,5 @@ A Google Sheets test case inventory (Login, Registration, Homepage, Product Deta
 
 ## Contributors
 
-- **Muhammad Medhat** — Login, Registration, Product, Cart, Homepage, End-to-End journey
-- **Salma Mizar** — Login, Registration, Product, Cart, Checkout
+- **Muhammad Medhat**
+- **Salma Mizar** 
