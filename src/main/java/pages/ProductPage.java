@@ -12,17 +12,11 @@ public class ProductPage extends BasePage {
     private By quantityInput = By.name("quantity");
     private By plusButton = By.cssSelector("div.plus");
     private By minusButton = By.cssSelector("div.minus");
-    private By outOfStockMessage = By.cssSelector("label.ng-binding");
 
     public ProductPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getOutOfStockMessage() {
-        return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(outOfStockMessage)
-        ).getText().trim();
-    }
 
     public boolean isProductPageDisplayed() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(productName)).isDisplayed();

@@ -83,6 +83,7 @@ public class HomePage extends BasePage {
         System.out.println("Clicking My Account");
         waitForLoaderToDisappear();
         driver.findElement(userIcon).click();
+        wait.until(ExpectedConditions.elementToBeClickable(myAccountLabel));
         driver.findElement(myAccountLabel).click();
     }
 

@@ -55,8 +55,6 @@ public class CartPage extends BasePage {
     public int getProductsCount() {
 
         waitForLoaderToDisappear();
-
-        WebDriverWait slowWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         slowWait.until((ExpectedConditions.visibilityOfElementLocated(cartCounter)));
 
         return driver.findElements(productNames).size();
