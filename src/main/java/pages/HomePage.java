@@ -1,8 +1,8 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -91,17 +91,30 @@ public class HomePage extends BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(deleteAccountButton));
         driver.findElement(deleteAccountButton).click();
         System.out.println("Clicked delete account button");
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".deletePopupBtn.deleteRed")));
+        driver.findElement(By.cssSelector(".deletePopupBtn.deleteRed")).click();
+        System.out.println("Confirmed account deletion, delete complete");
     }
 
     public boolean isUserLoggedIn(String username) {
         waitForLoaderToDisappear();
         try {
-            WebElement userElement = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.visibilityOfElementLocated(
-                            By.xpath("//*[@id='menuUserLink']/span[contains(.,'" + username + "')]")
-                    ));
-            return userElement.isDisplayed();
-        } catch (Exception e) {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//*[@id='menuUserLink']/span[contains(.,'" + username + "')]")));
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+    public boolean isUserLoggedOut(String username) {
+        waitForLoaderToDisappear();
+        By userLink = By.xpath("//*[@id='menuUserLink']/span[contains(.,'" + username + "')]");
+
+        try {
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(userLink));
+            return true;
+        } catch (TimeoutException e) {
             return false;
         }
     }

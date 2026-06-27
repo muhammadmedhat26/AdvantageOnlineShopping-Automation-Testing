@@ -49,9 +49,10 @@ public class EndToEndJourneyTest extends BaseTest {
         checkoutPage.enterSafePayPassword(TestData.SAFEPAY_PASSWORD);
         checkoutPage.clickPayNowSafePay();
 
-        Assert.assertTrue(
-                checkoutPage.isOrderConfirmationDisplayed(),
-                "Order confirmation should be displayed at the end of the journey"
-        );
+        Assert.assertTrue(checkoutPage.isOrderConfirmationDisplayed(), "Order confirmation should be displayed at the end of the journey");
+        homePage.navigateToMyAccount();
+        homePage.clickDeleteAccount();
+        Assert.assertTrue(homePage.isUserLoggedOut(randomUsername), "Expected user to be logged out after account deletion");
+
     }
 }

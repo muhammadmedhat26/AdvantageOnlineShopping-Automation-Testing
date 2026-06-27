@@ -68,15 +68,15 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    public void forgotPasswordLinkIsNotWorking() {
+    public void forgotPasswordLinkIsWorking() {
         homePage.clickUserIcon();
         homePage.waitForLoginPopup();
 
-        String currentUrl = driver.getCurrentUrl();
+        String priorUrl = driver.getCurrentUrl();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.clickForgotPassword();
 
-        Assert.assertNotEquals(driver.getCurrentUrl(), currentUrl, "Forgot password link should navigate to a reset password page,");
+        Assert.assertNotEquals(driver.getCurrentUrl(), priorUrl, "Forgot password link should navigate to a reset password page,");
     }
 }

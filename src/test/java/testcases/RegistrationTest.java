@@ -27,6 +27,7 @@ public class RegistrationTest extends BaseTest {
         homePage.navigateToMyAccount();
 
         homePage.clickDeleteAccount();
+        Assert.assertTrue(homePage.isUserLoggedOut(randomUsername), "Expected user to be logged out after account deletion");
     }
 
 
