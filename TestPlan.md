@@ -117,6 +117,6 @@ Maven, TestNG, Selenium WebDriver, IntelliJ IDEA, Google Sheets (manual test cas
 
 ## Roles
 
-**Muhammad Medhat** — Manual Testing, Test Design, Automation Framework Architecture; Login, Registration, Product, Cart, Homepage, and End-to-End journey automation
+**Muhammad Medhat** — Manual Testing, Test Design, Automation Framework Architecture; Login, Registration, Product, Homepage, and End-to-End journey automation
 
 **Salma Mizar** — Manual Testing, Test Design, Automation Framework Architecture; Login, Registration, Product, Cart, and Checkout automation
