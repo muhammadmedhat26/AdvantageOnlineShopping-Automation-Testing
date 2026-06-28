@@ -39,4 +39,13 @@ public class BasePage {
         Actions actions = new Actions(driver);
         actions.scrollToElement(element).perform();
     }
+
+    public void scrollToElement(By locator) {
+        WebElement element = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(locator));
+
+        new Actions(driver)
+                .scrollToElement(element)
+                .perform();
+    }
 }

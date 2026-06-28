@@ -22,7 +22,7 @@ public class CartTest extends BaseTest {
 
 
     //false positive case as it returns 0 as the number of products even if the cart is not empty due to the delay
-    @Test(groups = "requiresLogin")
+    @Test(groups = {"requiresLogin", "cartTests"})
     public void cartProductsCountIsDisplayed() {
 
         CartPage cartPage = new CartPage(driver);
@@ -33,7 +33,7 @@ public class CartTest extends BaseTest {
         Assert.assertTrue(cartPage.getProductsCount() >= 0, "Cart products count should be zero or more");
     }
 
-    @Test(groups = "requiresLogin")
+    @Test(groups = {"requiresLogin", "cartTests"})
     public void userCanIncreaseProductQuantityFromCart() {
 
         CartPage cartPage = new CartPage(driver);
@@ -59,7 +59,7 @@ public class CartTest extends BaseTest {
     }
 
 
-    @Test(groups = "requiresLogin")
+    @Test(groups = {"requiresLogin", "cartTests"})
     public void userCanDecreaseProductQuantityFromCart() {
 
         CartPage cartPage = new CartPage(driver);

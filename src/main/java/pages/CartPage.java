@@ -20,6 +20,8 @@ public class CartPage extends BasePage {
         super(driver);
     }
 
+
+
     public int getCartCounter() {
 
         String count = slowWait.until(ExpectedConditions.visibilityOfElementLocated(cartCounter)).getText().trim();

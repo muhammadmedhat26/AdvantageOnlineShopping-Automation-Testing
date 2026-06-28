@@ -61,6 +61,8 @@ public class HomePage extends BasePage {
     }
 
     public void clickSpeakersCategory() {
+        waitForLoaderToDisappear();
+        waitForPopupsToDisappear();
         System.out.println("Clicking speakers category");
         slowWait.until(ExpectedConditions.elementToBeClickable(speakersCategory));
         driver.findElement(speakersCategory).click();
@@ -126,7 +128,8 @@ public class HomePage extends BasePage {
         waitForPopupsToDisappear();
         slowWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(),'" + productName + "')]")));
         By productLink = By.xpath("//*[contains(text(),'" + productName + "')]");
-        driver.findElement(productLink).click();
+        scrollToElement(productLink);
+        slowWait.until(ExpectedConditions.elementToBeClickable(productLink)).click();
         return new ProductPage(driver);
     }
 
